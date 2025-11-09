@@ -17,7 +17,7 @@ const Navbar: React.FC = () => {
   const t = useTranslations('navigation');
 
   // Empty navigation items - add your own
-  const navItems = [
+  const navItems: { label: string; path: string }[] = [
     // Example: { label: t('home'), path: "/" },
     // Example: { label: t('about'), path: "/about" },
     // Example: { label: t('contact'), path: "/contact" },
@@ -63,9 +63,8 @@ const Navbar: React.FC = () => {
             <Link
               key={item.label}
               href={`/${locale}${item.path}`}
-              className={`text-sm font-medium transition-colors hover:text-primary ${
-                isLinkActive(item.path) ? "text-primary" : "text-foreground"
-              }`}
+              className={`text-sm font-medium transition-colors hover:text-primary ${isLinkActive(item.path) ? "text-primary" : "text-foreground"
+                }`}
             >
               {item.label}
             </Link>
@@ -88,9 +87,8 @@ const Navbar: React.FC = () => {
                   <Link
                     key={lang.code}
                     href={pathname.replace(/^\/[a-z]{2}/, `/${lang.code}`)}
-                    className={`flex items-center px-3 py-2 text-sm hover:bg-secondary transition-colors ${
-                      locale === lang.code ? 'bg-secondary text-primary' : 'text-foreground'
-                    }`}
+                    className={`flex items-center px-3 py-2 text-sm hover:bg-secondary transition-colors ${locale === lang.code ? 'bg-secondary text-primary' : 'text-foreground'
+                      }`}
                     onClick={() => setShowLangMenu(false)}
                   >
                     <span className="mr-2 text-xs font-mono">{lang.code.toUpperCase()}</span>
@@ -134,9 +132,8 @@ const Navbar: React.FC = () => {
                   <Link
                     key={lang.code}
                     href={pathname.replace(/^\/[a-z]{2}/, `/${lang.code}`)}
-                    className={`flex items-center px-3 py-2 text-sm hover:bg-secondary transition-colors ${
-                      locale === lang.code ? 'bg-secondary text-primary' : 'text-foreground'
-                    }`}
+                    className={`flex items-center px-3 py-2 text-sm hover:bg-secondary transition-colors ${locale === lang.code ? 'bg-secondary text-primary' : 'text-foreground'
+                      }`}
                     onClick={() => setShowLangMenu(false)}
                   >
                     <span className="mr-2 text-xs font-mono">{lang.code.toUpperCase()}</span>
@@ -183,9 +180,8 @@ const Navbar: React.FC = () => {
               <Link
                 key={item.label}
                 href={`/${locale}${item.path}`}
-                className={`block px-4 py-2 text-sm font-medium transition-colors hover:text-primary ${
-                  isLinkActive(item.path) ? "text-primary" : "text-foreground"
-                }`}
+                className={`block px-4 py-2 text-sm font-medium transition-colors hover:text-primary ${isLinkActive(item.path) ? "text-primary" : "text-foreground"
+                  }`}
                 onClick={toggleMenu}
               >
                 {item.label}

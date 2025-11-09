@@ -22,7 +22,7 @@ const ChatInterface: React.FC = () => {
   const [isHistoryOpen, setIsHistoryOpen] = useState(false);
   const [currentSession, setCurrentSession] = useState<string>('');
   const [chatSessions, setChatSessions] = useState<ChatSession[]>([]);
-  
+
   const messagesEndRef = useRef<HTMLDivElement>(null);
   const inputRef = useRef<HTMLTextAreaElement>(null);
 
@@ -77,17 +77,19 @@ const ChatInterface: React.FC = () => {
   const handleSend = () => {
     if (currentInput.trim()) {
       addMessage(currentInput, true);
-      
+
       // Simulate AI response (replace with actual API call later)
       setTimeout(() => {
         addMessage(`This is a mock response to: "${currentInput}"`, false);
+        // Refocus input after response is received
+        inputRef.current?.focus();
       }, 1000);
-      
+
       setCurrentInput('');
     }
   };
 
-  const handleKeyPress = (e: React.KeyboardEvent) => {
+  const handleKeyDown = (e: React.KeyboardEvent) => {
     if (e.key === 'Enter' && !e.shiftKey) {
       e.preventDefault();
       handleSend();
@@ -127,10 +129,9 @@ const ChatInterface: React.FC = () => {
   return (
     <div className="flex h-screen bg-background">
       {/* History Sidebar */}
-      <div className={`${
-        isHistoryOpen ? 'translate-x-0' : '-translate-x-full'
-      } fixed inset-y-0 left-0 z-50 w-80 bg-card border-r border-border transition-transform duration-300 ease-in-out lg:relative lg:translate-x-0 lg:flex lg:flex-col`}>
-        
+      <div className={`${isHistoryOpen ? 'translate-x-0' : '-translate-x-full'
+        } fixed inset-y-0 left-0 z-50 w-80 bg-card border-r border-border transition-transform duration-300 ease-in-out lg:relative lg:translate-x-0 lg:flex lg:flex-col`}>
+
         {/* Sidebar Header */}
         <div className="flex items-center justify-between p-4 border-b border-border">
           <h2 className="text-lg font-semibold text-foreground">Chat History</h2>
@@ -159,11 +160,10 @@ const ChatInterface: React.FC = () => {
             <div
               key={session.id}
               onClick={() => switchToSession(session.id)}
-              className={`group flex items-center justify-between p-3 rounded-lg cursor-pointer transition-colors ${
-                currentSession === session.id 
-                  ? 'bg-secondary border border-border' 
+              className={`group flex items-center justify-between p-3 rounded-lg cursor-pointer transition-colors ${currentSession === session.id
+                  ? 'bg-secondary border border-border'
                   : 'hover:bg-secondary/50'
-              }`}
+                }`}
             >
               <div className="flex items-center gap-3 flex-1 min-w-0">
                 <FiMessageCircle className="h-4 w-4 text-muted-foreground flex-shrink-0" />
@@ -229,20 +229,18 @@ const ChatInterface: React.FC = () => {
                   key={message.id}
                   className={`flex ${message.isUser ? 'justify-end' : 'justify-start'}`}
                 >
-                  <div className={`max-w-[80%] md:max-w-[70%] ${
-                    message.isUser 
-                      ? 'bg-primary text-primary-foreground' 
+                  <div className={`max-w-[80%] md:max-w-[70%] ${message.isUser
+                      ? 'bg-primary text-primary-foreground'
                       : 'bg-secondary text-secondary-foreground'
-                  } rounded-2xl px-4 py-3`}>
+                    } rounded-2xl px-4 py-3`}>
                     <div className="whitespace-pre-wrap break-words">
                       {message.content}
                     </div>
-                    <div className={`text-xs mt-2 opacity-70 ${
-                      message.isUser ? 'text-primary-foreground/70' : 'text-muted-foreground'
-                    }`}>
-                      {message.timestamp.toLocaleTimeString([], { 
-                        hour: '2-digit', 
-                        minute: '2-digit' 
+                    <div className={`text-xs mt-2 opacity-70 ${message.isUser ? 'text-primary-foreground/70' : 'text-muted-foreground'
+                      }`}>
+                      {message.timestamp.toLocaleTimeString([], {
+                        hour: '2-digit',
+                        minute: '2-digit'
                       })}
                     </div>
                   </div>
@@ -262,7 +260,7 @@ const ChatInterface: React.FC = () => {
                   ref={inputRef}
                   value={currentInput}
                   onChange={(e) => setCurrentInput(e.target.value)}
-                  onKeyPress={handleKeyPress}
+                  onKeyDown={handleKeyDown}
                   placeholder="Type your message..."
                   className="w-full resize-none rounded-2xl border border-border bg-background px-4 py-3 pr-12 text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent max-h-32 min-h-[3rem]"
                   rows={1}
